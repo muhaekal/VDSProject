@@ -6,8 +6,10 @@
 #include <string>
 #include "Manager.h"
 
+using ClassProject::Manager;
+
 
 int main(int argc, char* argv[])
 {
-    std::cout << "Nothing implemented, yet" << std::endl;
+    return 0;
 }
