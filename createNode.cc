@@ -36,7 +36,7 @@ TEST_F(ManagerTest, CreateNodeTest) {
     // Assert
     // You need to define your own assertions based on the expected behavior of createNode
     // For example, you might want to check if the uniqueTable has been updated correctly
-    ASSERT_EQ(manager.uniqueTable.size(), 1);  // Assuming the initial size was 0 and one entry is added
+    EXPECT_EQ(manager.uniqueTable.size(), 1);  // Assuming the initial size was 0 and one entry is added
     //ASSERT_EQ(manager.getUniqueTableMapSize(), 1);  // Assuming one entry is added to the map
     // Add more assertions as needed
 }
