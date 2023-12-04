@@ -1,5 +1,6 @@
 #include <gtest/gtest.h>
 #include "Manager.h"  // Include the header file for your Manager class
+#include "ManagerInterface.h"
 
 // Define a test fixture for the Manager class
 class ManagerTest : public ::testing::Test {
