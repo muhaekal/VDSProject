@@ -13,9 +13,7 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
-    
-    - name: Set up CMake
-      uses: actions/setup-cmake@v2
+  
       
     - name: Build
       run: |
