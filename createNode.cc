@@ -28,7 +28,7 @@ TEST_F(ManagerTest, CreateNodeTest) {
     ClassProject::BDD_ID l = 0;
     ClassProject::BDD_ID h = 0;
     ClassProject::BDD_ID x = 0;
-    ClassProject::std::string label = "False";
+    std::string label = "False";
 
     ClassProject::BDD_ID result = manager.createNode(l, h, x, label);
 
