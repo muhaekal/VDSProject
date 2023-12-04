@@ -20,3 +20,10 @@ jobs:
           cmake -S . -B build
           cmake --build build
           cd build && ctest --output-on-failure
+
+    - name: Upload Test Artifacts
+      if: always()
+      uses: actions/upload-artifact@v2
+      with:
+        name: test-logs
+        path: build/Testing/Temporary
