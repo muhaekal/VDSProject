@@ -25,22 +25,16 @@ TEST_F(ManagerTest, CreateNodeTest) {
     // Arrange
     ClassProject::Manager manager;  // Create an instance of Manager class
 
-    // Act
-    //ClassProject::BDD_ID l = 1;
-    //ClassProject::BDD_ID h = 1;
-    //ClassProject::BDD_ID x = 1;
-    //std::string label = "True";
 
-    //ClassProject::BDD_ID FalseNode = manager.createNode(0, 0, 0, "False");
+    ClassProject::BDD_ID var_a = manager.createNode(0, 1, 2, "a");
     //ClassProject::BDD_ID TrueNode = manager.createNode(1, 1, 1, "True");
 
     // Assert
     // You need to define your own assertions based on the expected behavior of createNode
     // For example, you might want to check if the uniqueTable has been updated correctly
     //EXPECT_TRUE(manager.isVariable(result));
-    //EXPECT_EQ(manager.topVar(FalseNode), 0);
-    //EXPECT_EQ(manager.topVar(TrueNode), 1); 
-    EXPECT_EQ(manager.uniqueTableSize(), 2);
+    EXPECT_EQ(manager.topVar(var_a), 2); 
+    EXPECT_EQ(manager.uniqueTableSize(), 3);
     //ASSERT_EQ(manager.getUniqueTableMapSize(), 1);  // Assuming one entry is added to the map
     // Add more assertions as needed
 }
