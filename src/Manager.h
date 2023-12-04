@@ -71,6 +71,14 @@ namespace ClassProject {
         //void visualizeBDD(std::string filepath, BDD_ID &root) override;
 
         //void generateDot(std::ofstream &outfile, const BDD_ID &root, std::set<BDD_ID> &visitedNodes);
+        
+        std::vector<UniqueTableEntry> uniqueTable;
+        
+        std::unordered_map<size_t, BDD_ID> uniqueTableMap;
+        
+        BDD_ID createNode(BDD_ID l, BDD_ID h, BDD_ID x, std::string label);
+        
+        
 
         //Constructor & destructor
        Manager();
@@ -82,13 +90,7 @@ namespace ClassProject {
 
         BDD_ID FalseID;
 
-        std::vector<UniqueTableEntry> uniqueTable;
-
         std::unordered_map<size_t, BDD_ID> computedTable;
-
-        std::unordered_map<size_t, BDD_ID> uniqueTableMap;
-
-        BDD_ID createNode(BDD_ID l, BDD_ID h, BDD_ID x, std::string label);
 
         BDD_ID findOrAdd(BDD_ID a, BDD_ID b, BDD_ID c);
 
