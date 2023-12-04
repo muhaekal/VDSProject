@@ -40,6 +40,7 @@ TEST_F(ManagerTest, CreateNodeTest) {
     //EXPECT_TRUE(manager.isVariable(result));
     EXPECT_EQ(manager.topVar(FalseNode), 0);
     EXPECT_EQ(manager.topVar(TrueNode), 1); 
+    EXPECT_EQ(manager.uniqueTableSize(), 2);
     //ASSERT_EQ(manager.getUniqueTableMapSize(), 1);  // Assuming one entry is added to the map
     // Add more assertions as needed
 }
