@@ -54,14 +54,14 @@ target_link_libraries(VDSProject Manager)
 enable_testing()
 
 add_executable(
-  hello_test
-  hello_test.cc
+  createNode
+  createNode.cc
 )
 target_link_libraries(
-  hello_test
+  createNode
   GTest::gtest_main
 )
 
 include(GoogleTest)
-gtest_discover_tests(hello_test)
+gtest_discover_tests(createNode)
 
