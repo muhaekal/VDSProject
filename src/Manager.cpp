@@ -199,9 +199,9 @@ void Manager::generateDot(std::ofstream &outfile, const BDD_ID &root, std::set<B
 //creates a node in BDD
 BDD_ID Manager::createNode(BDD_ID l, BDD_ID h, BDD_ID x, std::string label)
 {
-    uniqueTable.push_back(UniqueTableEntry {label, uniqueTableSize() - 1,h,l,x});
+    uniqueTable.push_back(UniqueTableEntry {label, uniqueTableSize(),h,l,x});
     uniqueTableMap.insert({keyGen(x,l,h), uniqueTableSize() - 1});
-    return uniqueTableSize() - 1;
+    return uniqueTableSize();
 }
 
 //Find or add unique table
