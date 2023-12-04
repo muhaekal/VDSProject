@@ -55,7 +55,7 @@ enable_testing()
 
 add_executable(
   createNode
-  /src/createNode.cc
+  createNode.cc
 )
 target_link_libraries(
   createNode
