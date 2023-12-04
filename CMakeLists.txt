@@ -54,8 +54,8 @@ target_link_libraries(VDSProject Manager)
 enable_testing()
 
 add_executable(
-  createNode
-  createNode.cc
+  main_test
+  main_test.cc
   src/Manager.cpp
 )
 target_link_libraries(
