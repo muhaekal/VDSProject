@@ -56,7 +56,7 @@ enable_testing()
 add_executable(
   createNode
   createNode.cc
-  Manager.cpp
+  src/Manager.cpp
 )
 target_link_libraries(
   createNode
