@@ -59,10 +59,10 @@ add_executable(
   src/Manager.cpp
 )
 target_link_libraries(
-  createNode
+  main_test
   GTest::gtest_main
 )
 
 include(GoogleTest)
-gtest_discover_tests(createNode)
+gtest_discover_tests(main_test)
 
