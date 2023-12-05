@@ -25,7 +25,7 @@ TEST_F(ManagerTest, CreateNodeTest) {
     ClassProject::Manager manager;  // Create an instance of Manager class
 
 
-    ClassProject::BDD_ID var_a = manager.createNode(0, 1, 2, "a");
+    ClassProject::BDD_ID ID_a = manager.createNode(0, 1, 2, "a");
     //ClassProject::BDD_ID TrueNode = manager.createNode(1, 1, 1, "True");
 
     // Assert
@@ -35,6 +35,7 @@ TEST_F(ManagerTest, CreateNodeTest) {
     //EXPECT_EQ(manager.topVar(var_a), 2); 
     EXPECT_EQ(manager.uniqueTableSize(), 3);
     EXPECT_EQ(manager.uniqueTableMap.size(), 3);
+    EXPECT_EQ(ID_a, 2);
     //ASSERT_EQ(manager.getUniqueTableMapSize(), 1);  // Assuming one entry is added to the map
     // Add more assertions as needed
 }
