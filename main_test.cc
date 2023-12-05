@@ -39,10 +39,10 @@ TEST_F(ManagerTest, CreateVarTest) {
 
 
     ClassProject::BDD_ID ID_a = manager.createVar("a");
-    //ClassProject::BDD_ID ID_b = manager.createVar("b");
+    ClassProject::BDD_ID ID_b = manager.createVar("b");
  
-    EXPECT_EQ(ID_a, 1);
-    //EXPECT_EQ(ID_b, 2);
+    EXPECT_EQ(ID_a, 2);
+    EXPECT_EQ(ID_b, 1);
     
 }
 
