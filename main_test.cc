@@ -42,7 +42,7 @@ TEST_F(ManagerTest, CreateVarTest) {
     ClassProject::BDD_ID ID_b = manager.createVar("b");
  
     EXPECT_EQ(ID_a, 2);
-    EXPECT_EQ(ID_b, 2);
+    EXPECT_EQ(ID_b, 3);
     
 }
 
