@@ -33,6 +33,19 @@ TEST_F(ManagerTest, CreateNodeTest) {
     
 }
 
+TEST_F(ManagerTest, CreateVarTest) {
+    
+    ClassProject::Manager manager;  // Create an instance of Manager class
+
+
+    ClassProject::BDD_ID ID_a = manager.createVar("a");
+    ClassProject::BDD_ID ID_b = manager.createVar("b");
+ 
+    EXPECT_EQ(ID_a, 2);
+    EXPECT_EQ(ID_b, 3);
+    
+}
+
 // define additional test cases as needed
 
 // Entry point for running the tests
