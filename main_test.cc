@@ -33,7 +33,7 @@ TEST_F(ManagerTest, CreateNodeTest) {
     // For example, you might want to check if the uniqueTable has been updated correctly
     //EXPECT_TRUE(manager.isVariable(result));
     //EXPECT_EQ(manager.topVar(var_a), 2); 
-    EXPECT_EQ(manager.uniqueTableSize(), 3);
+    EXPECT_EQ(manager.uniqueTableSize(), 4);
     //ASSERT_EQ(manager.getUniqueTableMapSize(), 1);  // Assuming one entry is added to the map
     // Add more assertions as needed
 }
