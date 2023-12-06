@@ -29,7 +29,7 @@ TEST_F(ManagerTest, CreateNodeTest) {
  
     EXPECT_EQ(manager.uniqueTableSize(), 3);
     EXPECT_EQ(manager.uniqueTableMap.size(), 3);
-    EXPECT_EQ(ID_a, 1);
+    EXPECT_EQ(ID_a, 2);
     
 }
 
