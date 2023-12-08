@@ -78,6 +78,8 @@ namespace ClassProject {
         
         BDD_ID createNode(BDD_ID l, BDD_ID h, BDD_ID x, std::string label);
         
+        static size_t keyGen(BDD_ID a, BDD_ID b, BDD_ID c);
+        
         
 
         //Constructor & destructor
@@ -94,7 +96,7 @@ namespace ClassProject {
 
         BDD_ID findOrAdd(BDD_ID a, BDD_ID b, BDD_ID c);
 
-        static size_t keyGen(BDD_ID a, BDD_ID b, BDD_ID c);
+        
 
     };
 
