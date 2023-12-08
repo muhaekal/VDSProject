@@ -4,7 +4,7 @@
 // Define a test fixture for the Manager class
 class ManagerTest : public ::testing::Test {
 protected:
-    // You can initialize objects or resources shared by all tests in the fixture here
+    ClassProject::Manager manager;  // Create an instance of Manager class
 
     // This function will be called before each test
     void SetUp() override {
@@ -21,8 +21,6 @@ protected:
 
 // Define a test case for the createNode function
 TEST_F(ManagerTest, CreateNodeTest) {
-    
-    ClassProject::Manager manager;  // Create an instance of Manager class
 
 
     ClassProject::BDD_ID ID_a = manager.createNode(0, 1, 2, "a");
@@ -35,14 +33,22 @@ TEST_F(ManagerTest, CreateNodeTest) {
 
 TEST_F(ManagerTest, CreateVarTest) {
     
-    ClassProject::Manager manager;  // Create an instance of Manager class
-
 
     ClassProject::BDD_ID ID_a = manager.createVar("a");
     ClassProject::BDD_ID ID_b = manager.createVar("b");
  
     EXPECT_EQ(ID_a, 2);
     EXPECT_EQ(ID_b, 3);
+    
+}
+
+TEST_F(ManagerTest, keyGenTest) {
+   
+
+    size_t d = manager.keyGen(1,1,1);
+ 
+    EXPECT_EQ(d, 2);
+    //EXPECT_EQ(ID_b, 3);
     
 }
 
