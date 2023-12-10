@@ -55,7 +55,7 @@ enable_testing()
 
 add_executable(
   main_test
-  main_test.cc
+  src/test/main_test.cpp
   src/Manager.cpp
 )
 target_link_libraries(
