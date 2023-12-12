@@ -25,7 +25,7 @@ int main(int argc, char* argv[])
     ClassProject::BDD_ID f = manager.and2(manager.or2(a, b), manager.and2(c, d));
 
     //Printing list of nodes in uniqueTable
-    for (int i = 0; i < manager.uniqueTableSize();i++)
+    /*for (int i = 0; i < manager.uniqueTableSize();i++)
     {
         printf("ID %d, High %d, Low %d, Top %d, Label %s\n",
                manager.uniqueTable[i].id,
@@ -34,7 +34,7 @@ int main(int argc, char* argv[])
                manager.uniqueTable[i].TopVar,
                manager.uniqueTable[i].label.c_str()
                );
-    }
+    }*/
 
     manager.visualizeBDD("bdd_1.dot", f);
 
