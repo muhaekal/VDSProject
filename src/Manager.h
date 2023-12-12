@@ -67,8 +67,6 @@ namespace ClassProject {
         void findVars(const BDD_ID &root, std::set<BDD_ID> &vars_of_root) override;
 
         size_t uniqueTableSize() override;
-
-        void visualizeBDD(std::string filepath, BDD_ID &root) override;
         
         std::vector<UniqueTableEntry> uniqueTable;
         
@@ -83,6 +81,8 @@ namespace ClassProject {
         BDD_ID TrueID;
 
         BDD_ID FalseID;
+
+        //void visualizeBDD(std::string filepath, BDD_ID &root) override;
 
         //Constructor & destructor
        Manager();
