@@ -52,6 +52,7 @@ TEST_F(ManagerTest, keyGenTest) {
     size_t d = manager.keyGen(1,1,1);
  
     EXPECT_EQ(d, 4398048608257);
+    //EXPECT_EQ(d, 2);
     //EXPECT_EQ(ID_b, 3);
     
 }

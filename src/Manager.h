@@ -68,9 +68,7 @@ namespace ClassProject {
 
         size_t uniqueTableSize() override;
 
-        //void visualizeBDD(std::string filepath, BDD_ID &root) override;
-
-        //void generateDot(std::ofstream &outfile, const BDD_ID &root, std::set<BDD_ID> &visitedNodes);
+        void visualizeBDD(std::string filepath, BDD_ID &root) override;
         
         std::vector<UniqueTableEntry> uniqueTable;
         
@@ -79,8 +77,12 @@ namespace ClassProject {
         BDD_ID createNode(BDD_ID l, BDD_ID h, BDD_ID x, std::string label);
         
         static size_t keyGen(BDD_ID a, BDD_ID b, BDD_ID c);
-        
-        
+
+        BDD_ID findOrAdd(BDD_ID a, BDD_ID b, BDD_ID c);
+
+        BDD_ID TrueID;
+
+        BDD_ID FalseID;
 
         //Constructor & destructor
        Manager();
@@ -88,15 +90,8 @@ namespace ClassProject {
        ~Manager();
 
     private:
-        BDD_ID TrueID;
-
-        BDD_ID FalseID;
 
         std::unordered_map<size_t, BDD_ID> computedTable;
-
-        BDD_ID findOrAdd(BDD_ID a, BDD_ID b, BDD_ID c);
-
-        
 
     };
 
