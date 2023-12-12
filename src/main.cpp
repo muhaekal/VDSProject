@@ -34,9 +34,9 @@ int main(int argc, char* argv[])
                manager.uniqueTable[i].TopVar,
                manager.uniqueTable[i].label.c_str()
                );
-    }*/
+    }
 
-    manager.visualizeBDD("bdd_1.dot", f);
+    manager.visualizeBDD("bdd_1.dot", f); */
 
     return 0;
 }
