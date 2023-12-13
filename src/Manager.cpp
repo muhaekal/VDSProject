@@ -194,7 +194,7 @@ BDD_ID Manager::lowSuccessor(BDD_ID a)
     return uniqueTable[a].low;
 }
 
-{
+std::string Manager::getLabel(ClassProject::BDD_ID f) {
     return uniqueTable[f].label;
 }
 
