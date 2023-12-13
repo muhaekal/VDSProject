@@ -82,7 +82,13 @@ namespace ClassProject {
 
         BDD_ID FalseID;
 
-        //void visualizeBDD(std::string filepath, BDD_ID &root) override;
+        BDD_ID highSuccessor(BDD_ID a);
+
+        BDD_ID lowSuccessor(BDD_ID a);
+
+        std::string getLabel(BDD_ID f);
+
+        void visualizeBDD(std::string filepath, BDD_ID &root) override;
 
         //Constructor & destructor
        Manager();

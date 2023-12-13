@@ -1,5 +1,11 @@
 #include "Manager.h"
 
+#include <fstream>
+#include <iostream>
+#include <algorithm>
+//#include <fmt/format.h>
+
+
 using namespace ClassProject;
 
 //Creates a new variable with the given label and returns its ID.
@@ -152,54 +158,10 @@ size_t Manager::uniqueTableSize()
     return uniqueTable.size();
 }
 
-
-/*void Manager::visualizeBDD(std::string filepath, BDD_ID &root)
-{
-    std::ofstream outfile(filepath);
-
-    if (!outfile.is_open()) {
-        // Handle error: unable to open the file
-        std::cerr << "Error: Unable to open file " << filepath << std::endl;
-        return;
-    }
-
-    outfile << "digraph BDD {" << std::endl;
-
-    // Call a recursive function to generate the DOT representation
-    std::set<BDD_ID> visitedNodes;
-    generateDot(outfile, root, visitedNodes);
-
-
-    outfile << "}" << std::endl;
-
-    outfile.close();
-
-}
-
-void Manager::generateDot(std::ofstream &outfile, const BDD_ID &root, std::set<BDD_ID> &visitedNodes)
-{
-    if (visitedNodes.count(root) > 0) return;
-    visitedNodes.insert(root);
-    // Output DOT representation for the current node
-    outfile << "  " << uniqueTable[root].id << " [label=\"" << uniqueTable[root].label << "\"];" << std::endl;
-
-    if (!isConstant(uniqueTable[root].high)) {
-        outfile << "  " << uniqueTable[root].id << " -> " << uniqueTable[root].high << " [label=\"1\"];" << std::endl;
-        generateDot(outfile, uniqueTable[root].high, visitedNodes);
-    }
-
-    if (!isConstant(uniqueTable[root].low)) {
-        outfile << "  " << uniqueTable[root].id << " -> " << uniqueTable[root].low << " [label=\"0\"];" << std::endl;
-        generateDot(outfile, uniqueTable[root].low, visitedNodes);
-    }
-} */
-
-//Private functions
-
 //creates a node in BDD
 BDD_ID Manager::createNode(BDD_ID l, BDD_ID h, BDD_ID x, std::string label)
 {
-    uniqueTable.push_back(UniqueTableEntry {label, uniqueTableSize() - 1,h,l,x});
+    uniqueTable.push_back(UniqueTableEntry {label, uniqueTableSize(),h,l,x});
     uniqueTableMap.insert({keyGen(x,l,h), uniqueTableSize() - 1});
     return uniqueTableSize() - 1;
 }
@@ -216,6 +178,55 @@ BDD_ID Manager::findOrAdd(BDD_ID a, BDD_ID b, BDD_ID c)
 size_t Manager::keyGen(BDD_ID a, BDD_ID b, BDD_ID c)
 {
     return (((a << 21) + b) << 21) + c;
+}
+
+BDD_ID Manager::highSuccessor(BDD_ID a)
+{
+    return uniqueTable[a].high;
+}
+
+/**
+ * Returns low successor of node
+ * @param a id to be evaluated
+ */
+BDD_ID Manager::lowSuccessor(BDD_ID a)
+{
+    return uniqueTable[a].low;
+}
+
+{
+    return uniqueTable[f].label;
+}
+
+//VisualizeBDD: create a .dot file to display the ROBDD represented by the root node.
+void Manager::visualizeBDD(std::string filename, BDD_ID &root) {
+    std::ofstream file(filename);
+    file << "strict digraph ROBDD {\n";
+    file << "  0 [shape = square];\n";
+    file << "  1 [shape = square];\n";
+
+    std::unordered_map<BDD_ID, UniqueTableEntry> highest_nodes; // List of higher nodes in the Unique Table
+
+    for (const auto& node : uniqueTable) {
+        if (highest_nodes.find(node.TopVar) == highest_nodes.end() || node.high > highest_nodes[node.TopVar].high) {
+            highest_nodes[node.TopVar] = node;
+        }
+    }
+
+    for (const auto& pair : highest_nodes) {
+        const UniqueTableEntry& h_node = pair.second;
+
+        if (!isConstant(h_node.id)) {
+
+            file << "  " << getTopVarName(h_node.id) << " -> " << (isConstant(h_node.low) ?
+            std::to_string(h_node.low): getTopVarName(h_node.low)) << " [label=\"0\"] [style = \"dashed\"]\n";
+            file << "  " << getTopVarName(h_node.id) << " -> " << (isConstant(h_node.high) ?
+            std::to_string(h_node.high): getTopVarName(h_node.high)) << " [label=\"1\"]\n";
+
+        }
+    }
+
+    file << "}\n";
 }
 
 //Creates entries of False and True nodes in the unique table

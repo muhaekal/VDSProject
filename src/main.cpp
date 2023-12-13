@@ -20,23 +20,14 @@ int main(int argc, char* argv[])
     ClassProject::BDD_ID b = manager.createVar("b");
     ClassProject::BDD_ID c = manager.createVar("c");
     ClassProject::BDD_ID d = manager.createVar("d");
-
-
     ClassProject::BDD_ID f = manager.and2(manager.or2(a, b), manager.and2(c, d));
 
-    //Printing list of nodes in uniqueTable
-    /*for (int i = 0; i < manager.uniqueTableSize();i++)
-    {
-        printf("ID %d, High %d, Low %d, Top %d, Label %s\n",
-               manager.uniqueTable[i].id,
-               manager.uniqueTable[i].high,
-               manager.uniqueTable[i].low,
-               manager.uniqueTable[i].TopVar,
-               manager.uniqueTable[i].label.c_str()
-               );
-    }
+    for (auto node : manager.uniqueTable) {
+        std::cout <<"ID "<< node.id <<" High " << node.high <<" Low "<< node.low
+        <<" Top "<< node.TopVar<<" Label "<<node.label<< std::endl;
+    };
 
-    manager.visualizeBDD("bdd_1.dot", f); */
+    manager.visualizeBDD("robdd.dot", f);
 
     return 0;
 }
