@@ -8,7 +8,10 @@
 #include <vector>
 #include <string>
 #include <unordered_map>
+#include <map>
 #include <fstream>
+#include <memory>
+#include <set>
 
 #include "ManagerInterface.h"
 
@@ -82,11 +85,11 @@ namespace ClassProject {
 
         BDD_ID FalseID;
 
-        BDD_ID highSuccessor(BDD_ID a);
+        //BDD_ID highSuccessor(BDD_ID a);
 
-        BDD_ID lowSuccessor(BDD_ID a);
+        ///BDD_ID lowSuccessor(BDD_ID a);
 
-        std::string getLabel(BDD_ID f);
+        //std::string getLabel(BDD_ID f);
 
         void visualizeBDD(std::string filepath, BDD_ID &root) override;
 
@@ -98,6 +101,8 @@ namespace ClassProject {
     private:
 
         std::unordered_map<size_t, BDD_ID> computedTable;
+
+        //std::map<std::tuple<BDD_ID, BDD_ID, BDD_ID>, BDD_ID> computed_table;
 
     };
 

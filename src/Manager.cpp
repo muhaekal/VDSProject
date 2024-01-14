@@ -48,26 +48,57 @@ BDD_ID Manager::ite(BDD_ID i, BDD_ID t, BDD_ID e)
 {
     if (isConstant(i)) return (i == True()) ? t : e;
     if (t == e) return t;
+    if (t == True() && e == False()) return i;
     if (computedTable.find(keyGen(i,t,e)) != computedTable.end()) return computedTable.at(keyGen(i,t,e));
+
+
 
     BDD_ID x = topVar(i);
     x = (!isConstant(t) && topVar(t) < x) ? topVar(t) : x;
     x = (!isConstant(e) && topVar(e) < x) ? topVar(e) : x;
 
+
+
     BDD_ID rHigh = ite(coFactorTrue(i, x), coFactorTrue(t, x), coFactorTrue(e, x));
     BDD_ID rLow = ite(coFactorFalse(i, x), coFactorFalse(t, x), coFactorFalse(e, x));
     if (rHigh == rLow) return rHigh;
 
+
+
     BDD_ID r = findOrAdd(x, rLow, rHigh);
+    //BDD_ID r = createNode(rLow, rHigh, x, "");
     computedTable.insert({keyGen(i,t,e), r});
     return r;
+}
+
+//Find or add unique table
+BDD_ID Manager::findOrAdd(BDD_ID a, BDD_ID b, BDD_ID c)
+{
+    size_t key = keyGen(a, b, c);
+    if (uniqueTableMap.find(key) != uniqueTableMap.end()) return uniqueTableMap.at(key);
+    return createNode(b, c, a, "");
+}
+
+//Function to generate unique key to the uniqueTableMap: keyGen(TopVar, low, high)
+size_t Manager::keyGen(BDD_ID a, BDD_ID b, BDD_ID c)
+{
+    return (((a << 21) + b) << 21) + c;
+}
+
+//creates a node in BDD
+BDD_ID Manager::createNode(BDD_ID l, BDD_ID h, BDD_ID x, std::string label)
+{
+    uniqueTable.push_back(UniqueTableEntry {label, uniqueTableSize(),h,l,x});
+    uniqueTableMap.insert({keyGen(x,l,h), uniqueTableSize() - 1});
+    return uniqueTableSize() - 1;
 }
 
 //coFactorTrue(): Returns the positive co-factor of the function represented by ID f w.r.t. variable x. The second parameter is
 //optional. If x is not specified, the co-factor is determined w.r.t. the top variable of f.
 BDD_ID Manager::coFactorTrue(BDD_ID f, BDD_ID x)
 {
-    if (isConstant(f)) return f;
+    if (isConstant(f) || topVar(f) > x) return f;
+    //if (isConstant(f)) return f; //bottleneck of runtime
     if (topVar(f) == x) return uniqueTable[f].high;
 
     BDD_ID T = coFactorTrue(uniqueTable[f].high, x);
@@ -80,7 +111,8 @@ BDD_ID Manager::coFactorTrue(BDD_ID f, BDD_ID x)
 //optional. If x is not specified, the co-factor is determined w.r.t. the top variable of f.
 BDD_ID Manager::coFactorFalse(BDD_ID f, BDD_ID x)
 {
-    if (isConstant(f)) return f;
+    if (isConstant(f) || topVar(f) > x) return f;
+    //if (isConstant(f)) return f; //bottleneck of runtime
     if (topVar(f) == x) return uniqueTable[f].low;
 
     BDD_ID T = coFactorFalse(uniqueTable[f].high, x);
@@ -158,47 +190,27 @@ size_t Manager::uniqueTableSize()
     return uniqueTable.size();
 }
 
-//creates a node in BDD
-BDD_ID Manager::createNode(BDD_ID l, BDD_ID h, BDD_ID x, std::string label)
-{
-    uniqueTable.push_back(UniqueTableEntry {label, uniqueTableSize(),h,l,x});
-    uniqueTableMap.insert({keyGen(x,l,h), uniqueTableSize() - 1});
-    return uniqueTableSize() - 1;
-}
-
-//Find or add unique table
-BDD_ID Manager::findOrAdd(BDD_ID a, BDD_ID b, BDD_ID c)
-{
-    size_t key = keyGen(a, b, c);
-    if (uniqueTableMap.find(key) != uniqueTableMap.end()) return uniqueTableMap.at(key);
-    return createNode(b, c, a, "");
-}
-
-//Function to generate unique key to the uniqueTableMap: keyGen(TopVar, low, high)
-size_t Manager::keyGen(BDD_ID a, BDD_ID b, BDD_ID c)
-{
-    return (((a << 21) + b) << 21) + c;
-}
-
-BDD_ID Manager::highSuccessor(BDD_ID a)
+/*BDD_ID Manager::highSuccessor(BDD_ID a)
 {
     return uniqueTable[a].high;
 }
-
+*/
 /**
  * Returns low successor of node
  * @param a id to be evaluated
  */
-BDD_ID Manager::lowSuccessor(BDD_ID a)
+/*BDD_ID Manager::lowSuccessor(BDD_ID a)
 {
     return uniqueTable[a].low;
 }
-
+*/
+/*
 std::string Manager::getLabel(ClassProject::BDD_ID f) {
     return uniqueTable[f].label;
 }
-
+*/
 //VisualizeBDD: create a .dot file to display the ROBDD represented by the root node.
+
 void Manager::visualizeBDD(std::string filename, BDD_ID &root) {
     std::ofstream file(filename);
     file << "strict digraph ROBDD {\n";
@@ -208,7 +220,7 @@ void Manager::visualizeBDD(std::string filename, BDD_ID &root) {
     std::unordered_map<BDD_ID, UniqueTableEntry> highest_nodes; // List of higher nodes in the Unique Table
 
     for (const auto& node : uniqueTable) {
-        if (highest_nodes.find(node.TopVar) == highest_nodes.end() || node.high > highest_nodes[node.TopVar].high) {
+        if (highest_nodes.find(node.TopVar) == highest_nodes.end() || node.high >= highest_nodes[node.TopVar].high) {
             highest_nodes[node.TopVar] = node;
         }
     }
