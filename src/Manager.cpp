@@ -190,25 +190,25 @@ size_t Manager::uniqueTableSize()
     return uniqueTable.size();
 }
 
-/*BDD_ID Manager::highSuccessor(BDD_ID a)
+BDD_ID Manager::highSuccessor(BDD_ID a)
 {
     return uniqueTable[a].high;
 }
-*/
+
 /**
  * Returns low successor of node
  * @param a id to be evaluated
- */
-/*BDD_ID Manager::lowSuccessor(BDD_ID a)
+*/
+BDD_ID Manager::lowSuccessor(BDD_ID a)
 {
     return uniqueTable[a].low;
 }
-*/
-/*
+
+
 std::string Manager::getLabel(ClassProject::BDD_ID f) {
     return uniqueTable[f].label;
 }
-*/
+
 //VisualizeBDD: create a .dot file to display the ROBDD represented by the root node.
 
 void Manager::visualizeBDD(std::string filename, BDD_ID &root) {

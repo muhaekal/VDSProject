@@ -58,12 +58,6 @@ add_subdirectory(src)
 add_executable(VDSProject src/main.cpp)
 target_link_libraries(VDSProject Manager)
 
-#add_executable(main_bench src/bench/main_bench.cpp)
-#target_link_libraries(main_bench Manager)
-#target_link_libraries(main_bench Benchmark)
-#target_link_libraries(main_bench Manager ${Boost_LIBRARIES})
-
-
 enable_testing()
 
 add_executable(main_test src/test/main_test.cpp src/Manager.cpp)
