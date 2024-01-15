@@ -49,6 +49,8 @@ BDD_ID Manager::ite(BDD_ID i, BDD_ID t, BDD_ID e)
     if (isConstant(i)) return (i == True()) ? t : e;
     if (t == e) return t;
     if (t == True() && e == False()) return i;
+
+    //if (t == False() && e == True()) return neg(i); //Complement edges
     if (computedTable.find(keyGen(i,t,e)) != computedTable.end()) return computedTable.at(keyGen(i,t,e));
 
 
@@ -66,7 +68,6 @@ BDD_ID Manager::ite(BDD_ID i, BDD_ID t, BDD_ID e)
 
 
     BDD_ID r = findOrAdd(x, rLow, rHigh);
-    //BDD_ID r = createNode(rLow, rHigh, x, "");
     computedTable.insert({keyGen(i,t,e), r});
     return r;
 }
@@ -97,7 +98,7 @@ BDD_ID Manager::createNode(BDD_ID l, BDD_ID h, BDD_ID x, std::string label)
 //optional. If x is not specified, the co-factor is determined w.r.t. the top variable of f.
 BDD_ID Manager::coFactorTrue(BDD_ID f, BDD_ID x)
 {
-    if (isConstant(f) || topVar(f) > x) return f;
+    if (isConstant(f) || isConstant(x) || topVar(f) > x) return f;
     //if (isConstant(f)) return f; //bottleneck of runtime
     if (topVar(f) == x) return uniqueTable[f].high;
 
@@ -111,7 +112,7 @@ BDD_ID Manager::coFactorTrue(BDD_ID f, BDD_ID x)
 //optional. If x is not specified, the co-factor is determined w.r.t. the top variable of f.
 BDD_ID Manager::coFactorFalse(BDD_ID f, BDD_ID x)
 {
-    if (isConstant(f) || topVar(f) > x) return f;
+    if (isConstant(f) || isConstant(x) || topVar(f) > x) return f;
     //if (isConstant(f)) return f; //bottleneck of runtime
     if (topVar(f) == x) return uniqueTable[f].low;
 

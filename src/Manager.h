@@ -23,6 +23,8 @@ namespace ClassProject {
         BDD_ID high;
         BDD_ID low;
         BDD_ID TopVar;
+
+
     };
 
     class Manager : public ManagerInterface {
