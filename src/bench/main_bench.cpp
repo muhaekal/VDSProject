@@ -40,7 +40,7 @@ int main(int argc, char *argv[]) {
     std::cout << "**** Performance ****" << std::endl;
     std::cout << " Runtime: " << user_time << std::endl;
     process_mem_usage(vm2, rss2);
-    std::cout << " VM: " << vm2 - vm1 << "; RSS: " << rss2 - rss1 << endl << endl;
+    std::cout << " VM2: " << vm2 << " VM1:" << vm1 << " VM2 - VM1: " << vm2 - vm1 << "; RSS: " << rss2 - rss1 << endl << endl;
 
     return 0;
 }

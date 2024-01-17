@@ -3,7 +3,6 @@
 #include <fstream>
 #include <iostream>
 #include <algorithm>
-//#include <fmt/format.h>
 
 
 using namespace ClassProject;
@@ -46,9 +45,20 @@ return uniqueTable[f].TopVar;
 //Implements the if-then-else algorithm. Returns the existing or new node that represents the given expression
 BDD_ID Manager::ite(BDD_ID i, BDD_ID t, BDD_ID e)
 {
-    if (isConstant(i)) return (i == True()) ? t : e;
-    if (t == e) return t;
-    if (t == True() && e == False()) return i;
+    if (isConstant(i)) {
+        if (i == True()) {
+            return t;
+        }
+        else {
+            return e;
+        }
+    }
+    if (t == e) {
+        return t;
+    }
+    if (t == True() && e == False()) {
+        return i;
+    }
 
     //if (t == False() && e == True()) return neg(i); //Complement edges
     if (computedTable.find(keyGen(i,t,e)) != computedTable.end()) return computedTable.at(keyGen(i,t,e));
@@ -56,14 +66,21 @@ BDD_ID Manager::ite(BDD_ID i, BDD_ID t, BDD_ID e)
 
 
     BDD_ID x = topVar(i);
-    x = (!isConstant(t) && topVar(t) < x) ? topVar(t) : x;
-    x = (!isConstant(e) && topVar(e) < x) ? topVar(e) : x;
-
+    //x = (!isConstant(t) && topVar(t) < x) ? topVar(t) : x;
+    if (!isConstant(t) && topVar(t) < x) {
+        x = topVar(t);
+    }
+    //x = (!isConstant(e) && topVar(e) < x) ? topVar(e) : x;
+    if (!isConstant(e) && topVar(e) < x) {
+        x = topVar(e);
+    }
 
 
     BDD_ID rHigh = ite(coFactorTrue(i, x), coFactorTrue(t, x), coFactorTrue(e, x));
     BDD_ID rLow = ite(coFactorFalse(i, x), coFactorFalse(t, x), coFactorFalse(e, x));
-    if (rHigh == rLow) return rHigh;
+    if (rHigh == rLow) {
+        return rHigh;
+    }
 
 
 
@@ -76,7 +93,9 @@ BDD_ID Manager::ite(BDD_ID i, BDD_ID t, BDD_ID e)
 BDD_ID Manager::findOrAdd(BDD_ID a, BDD_ID b, BDD_ID c)
 {
     size_t key = keyGen(a, b, c);
-    if (uniqueTableMap.find(key) != uniqueTableMap.end()) return uniqueTableMap.at(key);
+    if (uniqueTableMap.find(key) != uniqueTableMap.end()) {
+        return uniqueTableMap.at(key);
+    }
     return createNode(b, c, a, "");
 }
 
@@ -98,9 +117,13 @@ BDD_ID Manager::createNode(BDD_ID l, BDD_ID h, BDD_ID x, std::string label)
 //optional. If x is not specified, the co-factor is determined w.r.t. the top variable of f.
 BDD_ID Manager::coFactorTrue(BDD_ID f, BDD_ID x)
 {
-    if (isConstant(f) || isConstant(x) || topVar(f) > x) return f;
+    if (isConstant(f) || isConstant(x) || topVar(f) > x) {
+        return f;
+    }
     //if (isConstant(f)) return f; //bottleneck of runtime
-    if (topVar(f) == x) return uniqueTable[f].high;
+    if (topVar(f) == x) {
+        return uniqueTable[f].high;
+    }
 
     BDD_ID T = coFactorTrue(uniqueTable[f].high, x);
     BDD_ID F = coFactorTrue(uniqueTable[f].low, x);
@@ -112,9 +135,13 @@ BDD_ID Manager::coFactorTrue(BDD_ID f, BDD_ID x)
 //optional. If x is not specified, the co-factor is determined w.r.t. the top variable of f.
 BDD_ID Manager::coFactorFalse(BDD_ID f, BDD_ID x)
 {
-    if (isConstant(f) || isConstant(x) || topVar(f) > x) return f;
+    if (isConstant(f) || isConstant(x) || topVar(f) > x) {
+        return f;
+    }
     //if (isConstant(f)) return f; //bottleneck of runtime
-    if (topVar(f) == x) return uniqueTable[f].low;
+    if (topVar(f) == x) {
+        return uniqueTable[f].low;
+    }
 
     BDD_ID T = coFactorFalse(uniqueTable[f].high, x);
     BDD_ID F = coFactorFalse(uniqueTable[f].low, x);
@@ -175,15 +202,23 @@ std::string Manager::getTopVarName(const BDD_ID &root)
 void Manager::findNodes(const BDD_ID &root, std::set<BDD_ID> &nodes_of_root)
 {
     nodes_of_root.insert(root);
-    if (nodes_of_root.find(uniqueTable[root].low) ==nodes_of_root.end()) findNodes(uniqueTable[root].low, nodes_of_root);
-    if (nodes_of_root.find(uniqueTable[root].high) ==nodes_of_root.end()) findNodes(uniqueTable[root].high, nodes_of_root);
+    if (nodes_of_root.find(uniqueTable[root].low) ==nodes_of_root.end()) {
+        findNodes(uniqueTable[root].low, nodes_of_root);
+    }
+    if (nodes_of_root.find(uniqueTable[root].high) ==nodes_of_root.end()) {
+        findNodes(uniqueTable[root].high, nodes_of_root);
+    }
 }
 
 void Manager::findVars(const BDD_ID &root, std::set<BDD_ID> &vars_of_root)
 {
     std::set<BDD_ID> nodes;
     findNodes(root, nodes);
-    for (auto node : nodes) if (!isConstant(node)) vars_of_root.insert(topVar(node));
+    for (auto node : nodes) {
+        if (!isConstant(node)) {
+            vars_of_root.insert(topVar(node));
+        }
+    }
 }
 
 size_t Manager::uniqueTableSize()
