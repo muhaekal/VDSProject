@@ -61,9 +61,9 @@ BDD_ID Manager::ite(BDD_ID i, BDD_ID t, BDD_ID e)
     }
 
     //if (t == False() && e == True()) return neg(i); //Complement edges
-    if (computedTable.find(keyGen(i,t,e)) != computedTable.end()) return computedTable.at(keyGen(i,t,e));
-
-
+    if (computedTable.find(keyGen(i,t,e)) != computedTable.end()) {
+        return computedTable.at(keyGen(i,t,e));
+    }
 
     BDD_ID x = topVar(i);
     //x = (!isConstant(t) && topVar(t) < x) ? topVar(t) : x;
