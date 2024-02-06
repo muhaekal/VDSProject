@@ -124,7 +124,7 @@ int Reachability::stateDistance(const std::vector<bool> &stateVector) {
 
         // Compute img(S)
         BDD_ID img_s = and2(xnor2(states.at(0), next_states.at(0)),img_sp);//temp1 = img_sp * s0
-        for (size_t i = 1; i < states.size(); i++) {
+        for (int i = 1; i < states.size(); i++) {
             img_s = and2(img_s, xnor2(states.at(i), next_states.at(i))); //temp1 * s1 *...
         }
 
