@@ -29,8 +29,6 @@ namespace ClassProject {
 
     private:
 
-        bool changed;
-
         std::vector<BDD_ID> states;
 
         std::vector<BDD_ID> next_states;
@@ -43,7 +41,9 @@ namespace ClassProject {
 
         BDD_ID characteristic_function;
 
-        void compute_reachable_states();
+        int distance;
+
+        BDD_ID shannon_cofactor(const BDD_ID &f, const std::vector<bool> &stateVector, const std::vector<BDD_ID> &v);
 
     };
 
