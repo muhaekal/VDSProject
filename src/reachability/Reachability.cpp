@@ -157,7 +157,13 @@ int Reachability::stateDistance(const std::vector<bool> &stateVector) {
 BDD_ID Reachability::shannon_cofactor(const BDD_ID &f, const std::vector<bool> &stateVector, const std::vector<BDD_ID> &v){
     BDD_ID temp = f;
     for (int i = 0;i < stateVector.size(); i++) {
-        temp = stateVector.at(i) ? coFactorTrue(temp, v.at(i)) : coFactorFalse(temp, v.at(i)); 
+        if (stateVector.at(i)){
+            temp = coFactorTrue(temp, v.at(i));
+        }
+        else {
+            temp = coFactorFalse(temp, v.at(i)); 
+        }
+        //temp = stateVector.at(i) ? coFactorTrue(temp, v.at(i)) : coFactorFalse(temp, v.at(i)); 
     }
     return temp;
 }
