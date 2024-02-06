@@ -11,12 +11,12 @@ ReachabilityInterface::ReachabilityInterface(stateSize, inputSize)
         std::__throw_runtime_error("Size cannot be zero");
     }
 
-    for (unsigned int i = 0; i < stateSize; i++ ) {
+    for (int i = 0; i < stateSize; i++ ) {
         states.push_back(createVar("s" + std::to_string(i)));
         next_states.push_back(createVar("s'" + std::to_string(i)));
     }
 
-    for (unsigned int i = 0; i < inputSize; i++ ) {
+    for (int i = 0; i < inputSize; i++ ) {
         inputs.push_back(createVar("x" + std::to_string(i)));
     }
 
@@ -54,7 +54,7 @@ void Reachability::setTransitionFunctions(const std::vector<BDD_ID> &transitionF
     transitions = transitionFunctions;
 
     //check all transition BDD_IDs are known
-    for(size_t i = 0; i < transitions.size(); i++) {
+    for(int i = 0; i < transitions.size(); i++) {
         if(transitions.at(i) >= uniqueTableSize()) {
             std::__throw_runtime_error("BDD_IDs is unknown for transition function");
         }
@@ -79,7 +79,7 @@ int Reachability::stateDistance(const std::vector<bool> &stateVector) {
     BDD_ID t = or2(and2(next_states.at(0),transitions.at(0)),
                    nor2(next_states.at(0),transitions.at(0)));
 
-    for (size_t i = 1; i < states.size(); i++) {
+    for (int i = 1; i < states.size(); i++) {
         t = and2(t, or2(and2(next_states.at(i),transitions.at(i)),
                         nor2(next_states.at(i),transitions.at(i))));
     }
@@ -94,7 +94,7 @@ int Reachability::stateDistance(const std::vector<bool> &stateVector) {
         Cr = xnor2(states.at(0), False());
     }
 
-    for (size_t i = 1; i < states.size(); i++) {
+    for (int i = 1; i < states.size(); i++) {
         if (initialState.at(i)) {
             Cr = and2(Cr,xnor2(states.at(i), True()));
         }
@@ -112,11 +112,11 @@ int Reachability::stateDistance(const std::vector<bool> &stateVector) {
 
         // Compute img(S')
         BDD_ID img_sp = and2(Cr, t); //temp1
-        for (size_t i = states.size() - 1; i != SIZE_MAX; i--) {
+        for (int i = 0; i< states.size(); i++) {
             img_sp = or2(coFactorTrue(img_sp, states.at(i)),
                          coFactorFalse(img_sp, states.at(i)));
         }
-        for (size_t i = inputs.size() - 1; i != SIZE_MAX; i--) {
+        for (int i = 0; i< inputs.size(); i++) {
             img_sp = or2(coFactorTrue(img_sp, inputs.at(i)),
                          coFactorFalse(img_sp, inputs.at(i)));
 
@@ -128,12 +128,12 @@ int Reachability::stateDistance(const std::vector<bool> &stateVector) {
             img_s = and2(img_s, xnor2(states.at(i), next_states.at(i))); //temp1 * s1 *...
         }
 
-        for (size_t i = states.size() - 1; i != SIZE_MAX; i--) {
+        for (int i = 0; i< states.size(); i++) {
             img_s = or2(coFactorTrue(img_s, next_states.at(i)),
                         coFactorFalse(img_s, next_states.at(i)));
         }
 
-        for (size_t i = inputs.size() - 1; i != SIZE_MAX; i--) {
+        for (int i = 0; i< inputs.size(); i++) {
             img_s = or2(coFactorTrue(img_s, inputs.at(i)),
                         coFactorFalse(img_s, inputs.at(i)));
 
@@ -155,8 +155,8 @@ int Reachability::stateDistance(const std::vector<bool> &stateVector) {
 } 
 
 BDD_ID Reachability::shannon_cofactor(const BDD_ID &f, const std::vector<bool> &stateVector, const std::vector<BDD_ID> &v){
-    auto temp = f;
-    for (int i = stateVector.size()-1;i >= 0; i--) {
+    BDD_ID temp = f;
+    for (int i = 0;i < stateVector.size(); i++) {
         temp = stateVector.at(i) ? coFactorTrue(temp, v.at(i)) : coFactorFalse(temp, v.at(i)); 
     }
     return temp;
