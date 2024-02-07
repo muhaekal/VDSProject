@@ -21,7 +21,7 @@ namespace ClassProject {
 
         void setInitState(const std::vector<bool> &stateVector) override;
 
-        explicit Reachability(unsigned int stateSize, unsigned int inputSize);
+        explicit Reachability(unsigned int stateSize, unsigned int inputSize = 0);
 
         ~Reachability();
 

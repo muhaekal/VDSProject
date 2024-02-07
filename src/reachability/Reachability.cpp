@@ -24,6 +24,9 @@ ReachabilityInterface::ReachabilityInterface(stateSize, inputSize)
     //default transition function is the identity function
     transitions = states;
 
+    //set initial state bits to false as default
+    setInitState(std::vector<bool>(stateSize, false));
+
 }
 
 const std::vector<BDD_ID> &Reachability::getStates() const {
@@ -163,7 +166,6 @@ BDD_ID Reachability::shannon_cofactor(const BDD_ID &f, const std::vector<bool> &
         else {
             temp = coFactorFalse(temp, v.at(i)); 
         }
-        //temp = stateVector.at(i) ? coFactorTrue(temp, v.at(i)) : coFactorFalse(temp, v.at(i)); 
     }
     return temp;
 }

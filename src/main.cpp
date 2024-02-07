@@ -32,7 +32,7 @@ int main(int argc, char* argv[])
 
    manager.visualizeBDD("robdd.dot", f);
 
-    ClassProject::Reachability fsm1 = ClassProject::Reachability(2,1);
+    ClassProject::Reachability fsm1 = ClassProject::Reachability(2);
 
     std::vector<ClassProject::BDD_ID> stateVars2 = fsm1.getStates();
     std::vector<ClassProject::BDD_ID> inputVars2 = fsm1.getInputs();
@@ -41,17 +41,17 @@ int main(int argc, char* argv[])
     ClassProject::BDD_ID s0 = stateVars2.at(0);
     ClassProject::BDD_ID s1 = stateVars2.at(1);
 
-    ClassProject::BDD_ID x0 = inputVars2.at(0);
+    //ClassProject::BDD_ID x0 = inputVars2.at(0);
     //ClassProject::BDD_ID x1 = inputVars2.at(1);
 
 
     //Transitions without inputs
-    //transitionFunctions.push_back(fsm1.neg(s1)); // s0' = not(s0)
-    //transitionFunctions.push_back(s0); // s1' = not(s1)
+    transitionFunctions.push_back(fsm1.neg(s1)); // s0' = not(s0)
+    transitionFunctions.push_back(s0); // s1' = not(s1)
 
     //Transitions with inputs
-    transitionFunctions.push_back(fsm1.and2(x0,fsm1.ite(s1,fsm1.False(),fsm1.neg(s0))));
-    transitionFunctions.push_back(fsm1.and2(x0,fsm1.and2(s0,fsm1.neg(s1))));
+    //transitionFunctions.push_back(fsm1.and2(x0,fsm1.ite(s1,fsm1.False(),fsm1.neg(s0))));
+    //transitionFunctions.push_back(fsm1.and2(x0,fsm1.and2(s0,fsm1.neg(s1))));
     
 
     fsm1.setTransitionFunctions(transitionFunctions);
