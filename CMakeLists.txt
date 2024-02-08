@@ -22,13 +22,7 @@ endif()
 
 # Add googletest directly to our build. This defines
 # the gtest and gtest_main targets.
-#add_subdirectory(${CMAKE_SOURCE_DIR}/gtest/googletest-src
- #       ${CMAKE_SOURCE_DIR}/gtest/googletest-build
-  #      EXCLUDE_FROM_ALL)
 
-# The gtest/gtest_main targets carry header search path
-# dependencies automatically when using CMake 2.8.11 or
-# later. Otherwise we have to add them here ourselves.
 
 add_subdirectory(${CMAKE_SOURCE_DIR}/gtest/googletest-src
         ${CMAKE_SOURCE_DIR}/gtest/googletest-build
