@@ -6,19 +6,19 @@ set(CMAKE_CXX_FLAGS  "${CMAKE_CXX_FLAGS} -fPIC -std=c++17 ${LLVM_CXX_FLAGS} ")
 # Download and unpack googletest at configure time
 configure_file(CMakeLists.txt.in ${CMAKE_SOURCE_DIR}/gtest/googletest-download/CMakeLists.txt)
 
-#execute_process(COMMAND ${CMAKE_COMMAND} -G "${CMAKE_GENERATOR}" .
+execute_process(COMMAND ${CMAKE_COMMAND} -G "${CMAKE_GENERATOR}" .
 
- #       RESULT_VARIABLE result
- #       WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}/gtest/googletest-download )
-#if(result)
- #   message(FATAL_ERROR "CMake step for googletest failed: ${result}")
-#endif()
-#execute_process(COMMAND ${CMAKE_COMMAND} --build .
- #       RESULT_VARIABLE result
- #      WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}/gtest/googletest-download )
-#if(result)
- #   message(FATAL_ERROR "Build step for googletest failed: ${result}")
-#endif()
+        RESULT_VARIABLE result
+        WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}/gtest/googletest-download )
+if(result)
+    message(FATAL_ERROR "CMake step for googletest failed: ${result}")
+endif()
+execute_process(COMMAND ${CMAKE_COMMAND} --build .
+        RESULT_VARIABLE result
+       WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}/gtest/googletest-download )
+if(result)
+    message(FATAL_ERROR "Build step for googletest failed: ${result}")
+endif()
 
 # Add googletest directly to our build. This defines
 # the gtest and gtest_main targets.
