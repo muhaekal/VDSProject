@@ -32,8 +32,15 @@ struct reachabilityTest : public ::testing::Test
 {
     ClassProject::Reachability fsm1 = ClassProject::Reachability(2,1);
 
+    ClassProject::Reachability fsm2 = ClassProject::Reachability(3);
+
     std::vector<ClassProject::BDD_ID> stateVars = fsm1.getStates();
     std::vector<ClassProject::BDD_ID> inputVars = fsm1.getInputs();
+
+    std::vector<ClassProject::BDD_ID> stateVars2 = fsm2.getStates();
+    std::vector<ClassProject::BDD_ID> inputVars2 = fsm2.getInputs();
+
+
     std::vector<ClassProject::BDD_ID> transitionFunctions;
 };
 
@@ -68,6 +75,43 @@ TEST_F(reachabilityTest, stateDistanceTest) {
   ASSERT_EQ(fsm1.stateDistance({true, false}), -1);
   ASSERT_EQ(fsm1.stateDistance({false, true}), -1);
   ASSERT_EQ(fsm1.stateDistance({true, true}), 1);
+}
+
+TEST_F(reachabilityTest, StateDistance3StatesTest) {
+  auto s0 = stateVars2.at(0);
+  auto s1 = stateVars2.at(1);
+  auto s2 = stateVars2.at(2);
+
+  transitionFunctions.push_back(fsm2.neg(s0));  // s0'
+  transitionFunctions.push_back(fsm2.ite(s0, fsm2.neg(s1), s1));  // s1'
+  transitionFunctions.push_back(fsm2.ite(fsm2.and2(s1, s0), fsm2.neg(s2), s2));  // s2'
+  
+  fsm2.setTransitionFunctions(transitionFunctions);
+
+  fsm2.setInitState({false, false, false});
+
+  ASSERT_EQ(fsm2.stateDistance({false, false, false}), 0);
+  ASSERT_EQ(fsm2.stateDistance({true, false, false}), 1);
+  ASSERT_EQ(fsm2.stateDistance({false, true, false}), 2);
+  ASSERT_EQ(fsm2.stateDistance({true, true, false}), 3);
+  ASSERT_EQ(fsm2.stateDistance({false, false, true}), 4);
+  ASSERT_EQ(fsm2.stateDistance({true, false, true}), 5);
+  ASSERT_EQ(fsm2.stateDistance({false, true, true}), 6);
+  ASSERT_EQ(fsm2.stateDistance({true, true, true}), 7);
+}
+
+TEST_F(reachabilityTest, ExceptionsTest) {
+  auto s0 = stateVars.at(0);
+  auto s1 = stateVars.at(1);
+
+  transitionFunctions.push_back(fsm1.neg(s0));
+  transitionFunctions.push_back(fsm1.neg(s0));
+  transitionFunctions.push_back(fsm1.ite(s0, fsm1.neg(s1), s1));
+
+  EXPECT_THROW(fsm1.setTransitionFunctions(transitionFunctions), std::runtime_error);
+  EXPECT_THROW(fsm1.setInitState({false, false, true}), std::runtime_error);
+  EXPECT_THROW(fsm1.isReachable({true, true, true}), std::runtime_error);
+  EXPECT_THROW(fsm1.stateDistance({true, true, true}), std::runtime_error);
 }
 
 

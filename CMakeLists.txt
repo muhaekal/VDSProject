@@ -15,14 +15,13 @@ if(result)
 endif()
 execute_process(COMMAND ${CMAKE_COMMAND} --build .
         RESULT_VARIABLE result
-       WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}/gtest/googletest-download )
+        WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}/gtest/googletest-download )
 if(result)
     message(FATAL_ERROR "Build step for googletest failed: ${result}")
 endif()
 
 # Add googletest directly to our build. This defines
 # the gtest and gtest_main targets.
-
 
 add_subdirectory(${CMAKE_SOURCE_DIR}/gtest/googletest-src
         ${CMAKE_SOURCE_DIR}/gtest/googletest-build
