@@ -3,9 +3,10 @@
 //
 #include <gtest/gtest.h>
 #include "Manager.h"  // Include the header file for your Manager class
+#include "Reachability.h"
 
 
-class managerTest : public ::testing::Test
+struct managerTest : public ::testing::Test
 {
 protected:
     ClassProject::Manager manager;
@@ -26,6 +27,49 @@ protected:
         return manager.and2(a, b);
     };
 };
+
+struct reachabilityTest : public ::testing::Test
+{
+    ClassProject::Reachability fsm1 = ClassProject::Reachability(2,1);
+
+    std::vector<ClassProject::BDD_ID> stateVars = fsm1.getStates();
+    std::vector<ClassProject::BDD_ID> inputVars = fsm1.getInputs();
+    std::vector<ClassProject::BDD_ID> transitionFunctions;
+};
+
+TEST_F(reachabilityTest, isReachableTest) {
+  auto s0 = stateVars.at(0);
+  auto s1 = stateVars.at(1);
+  auto x0 = inputVars.at(0);
+
+  // Counter up to 3: 00, 01, 10 and reset to 00
+  transitionFunctions.push_back(fsm1.and2(x0, fsm1.ite(s1, fsm1.False(), fsm1.neg(s0))));
+  transitionFunctions.push_back(fsm1.and2(x0, fsm1.and2(s0, fsm1.neg(s1))));
+
+  fsm1.setTransitionFunctions(transitionFunctions);
+  fsm1.setInitState({false, false});
+
+  ASSERT_TRUE(fsm1.isReachable({false, false}));
+  ASSERT_TRUE(fsm1.isReachable({false, true}));
+  ASSERT_TRUE(fsm1.isReachable({true, false}));
+  ASSERT_FALSE(fsm1.isReachable({true, true}));
+}
+TEST_F(reachabilityTest, stateDistanceTest) {
+  auto s0 = stateVars.at(0);
+  auto s1 = stateVars.at(1);
+
+  transitionFunctions.push_back(fsm1.neg(s0)); // s0' = not(s0)
+  transitionFunctions.push_back(fsm1.neg(s1)); // s1' = not(s1)
+
+  fsm1.setTransitionFunctions(transitionFunctions);
+  fsm1.setInitState({false, false});
+
+  ASSERT_EQ(fsm1.stateDistance({false, false}), 0);
+  ASSERT_EQ(fsm1.stateDistance({true, false}), -1);
+  ASSERT_EQ(fsm1.stateDistance({false, true}), -1);
+  ASSERT_EQ(fsm1.stateDistance({true, true}), 1);
+}
+
 
 // Test that the True and False nodes exist and have correct properties
 TEST_F(managerTest, TrueAndFalseNodes) {
@@ -66,17 +110,6 @@ TEST_F(managerTest, UniqueTableSizeIncreasesAfterCreatingVar) {
     manager.createVar("test_var");
     ASSERT_EQ(manager.uniqueTableSize(), initialSize + 1);
 }
-/*
-TEST_F(managerTest, CreateNodeTest) {
-
-
-    ClassProject::BDD_ID ID_a = manager.createNode(0, 1, 2, "a");
-
-    EXPECT_EQ(manager.uniqueTableSize(), 3);
-    EXPECT_EQ(manager.uniqueTableMap.size(), 3);
-    EXPECT_EQ(ID_a, 2);
-
-}*/
 
 //Returns true if the given ID represents a leaf node
 TEST_F(managerTest, isconstantTest)

@@ -4,7 +4,7 @@ set(CMAKE_CXX_FLAGS  "${CMAKE_CXX_FLAGS} -fPIC -std=c++17 ${LLVM_CXX_FLAGS} ")
 
 
 # Download and unpack googletest at configure time
-#configure_file(CMakeLists.txt.in ${CMAKE_SOURCE_DIR}/gtest/googletest-download/CMakeLists.txt)
+configure_file(CMakeLists.txt.in ${CMAKE_SOURCE_DIR}/gtest/googletest-download/CMakeLists.txt)
 
 #execute_process(COMMAND ${CMAKE_COMMAND} -G "${CMAKE_GENERATOR}" .
 
@@ -71,7 +71,7 @@ target_link_libraries(VDSProject Manager)
 
 enable_testing()
 
-add_executable(main_test src/test/main_test.cpp src/Manager.cpp)
+add_executable(main_test src/test/main_test.cpp src/Manager.cpp src/reachability/Reachability.cpp)
 add_executable(benchmark src/bench/main_bench.cpp src/bench/BenchmarkLib.cpp src/bench/BenchParser.cpp src/bench/CircuitToBDD.cpp src/Manager.cpp)
 add_executable(verify src/verify/main_verify.cpp)
 #add_executable(reachability src/reachability/main_test.cpp src/reachability/Reachability.cpp
@@ -82,6 +82,6 @@ target_link_libraries(VDSProject Manager ${Boost_LIBRARIES})
 target_link_libraries(main_test GTest::gtest_main)
 #target_link_libraries(reachability Manager Reachability gtest gtest_main pthread)
 
-##include(GoogleTest)
-#gtest_discover_tests(main_test)
+include(GoogleTest)
+gtest_discover_tests(main_test)
 
