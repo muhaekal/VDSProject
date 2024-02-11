@@ -2,4 +2,6 @@ gtest/
 build/
 results/
 .DS_Store
-
+.idea/
+.vscode/
+cmake-build-debug/
